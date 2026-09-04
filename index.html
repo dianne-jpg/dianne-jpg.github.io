@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dianne — Interactive Hardware & Light</title>
+<style>
+  :root {
+    --bg: #14171C;
+    --surface: #1B2027;
+    --surface-line: #2A313B;
+    --text: #EDE6DA;
+    --text-dim: #8B94A3;
+    --glow: #F2A65A;
+    --glow-soft: rgba(242, 166, 90, 0.35);
+    --teal: #4FB3A9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+  }
+
+  ::selection { background: var(--glow-soft); }
+
+  a { color: var(--glow); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--glow);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    min-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, var(--glow-soft) 0%, transparent 65%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: bloom 2.4s ease-out forwards;
+    pointer-events: none;
+  }
+
+  @keyframes bloom {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+    60%  { opacity: 1; }
+    100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  .kicker {
+    color: var(--teal);
+    font-size: 0.95rem;
+    margin: 0 0 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.08;
+    margin: 0 0 20px;
+    font-weight: 700;
+    max-width: 14ch;
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    max-width: 46ch;
+    margin: 0 0 28px;
+  }
+
+  .hero-links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-block;
+    padding: 11px 22px;
+    border-radius: 6px;
+    border: 1px solid var(--surface-line);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .btn:hover { border-color: var(--glow); background: var(--surface); text-decoration: none; }
+  .btn-primary { background: var(--glow); color: #1B1508; border-color: var(--glow); }
+  .btn-primary:hover { background: #f5b370; }
+
+  /* ---- Section scaffolding ---- */
+  section { padding: 64px 0; border-top: 1px solid var(--surface-line); }
+  section:first-of-type { border-top: none; }
+
+  h2 {
+    font-size: 1.6rem;
+    margin: 0 0 10px;
+  }
+
+  .section-note {
+    color: var(--text-dim);
+    max-width: 56ch;
+    margin: 0 0 36px;
+  }
+
+  /* ---- About ---- */
+  .about-text { max-width: 62ch; color: var(--text-dim); font-size: 1.05rem; }
+  .about-text p { margin: 0 0 18px; }
+  .about-text strong { color: var(--text); font-weight: 600; }
+
+  /* ---- Project cards, proximity-glow ---- */
+  .project {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 28px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .project .photo-slot {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    border-radius: 6px;
+    background:
+      repeating-linear-gradient(135deg, #232a33, #232a33 10px, #1e242c 10px, #1e242c 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+    border: 1px dashed var(--surface-line);
+  }
+
+  .status {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .status-done { color: #a3d9c9; background: rgba(79, 179, 169, 0.15); }
+  .status-progress { color: var(--glow); background: rgba(242, 166, 90, 0.14); }
+
+  .project h3 { margin: 0 0 10px; font-size: 1.3rem; }
+  .project p.desc { color: var(--text-dim); margin: 0 0 18px; max-width: 58ch; }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .stack li {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    border: 1px solid var(--surface-line);
+    padding: 4px 10px;
+    border-radius: 5px;
+  }
+
+  /* ---- Skills / study ---- */
+  .study-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .study-item h4 { margin: 0 0 6px; font-size: 1.02rem; }
+  .study-item p { margin: 0; color: var(--text-dim); font-size: 0.95rem; }
+
+  /* ---- Contact / footer ---- */
+  footer {
+    padding: 60px 0 50px;
+    border-top: 1px solid var(--surface-line);
+  }
+  footer h2 { margin-bottom: 12px; }
+  footer p { color: var(--text-dim); max-width: 50ch; }
+  .footer-links { display: flex; gap: 22px; margin-top: 20px; flex-wrap: wrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero::before { animation: none; opacity: 0.4; }
+    .project { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <section class="hero">
+    <p class="kicker">Interactive hardware & light</p>
+    <h1>I build objects that respond to you.</h1>
+    <p>Physical computing, embedded systems, and a background in fieldwork — now pointed at sensors, microcontrollers, and things that glow, sense, and react.</p>
+    <div class="hero-links">
+      <a class="btn btn-primary" href="#projects">See the projects</a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About</h2>
+    <div class="about-text">
+      <p>I spent close to a decade working in <strong>natural resources</strong> — habitat restoration, wildland fire, and park ranger work. It was hands-on, physical, and often involved reading systems in real time: fire behavior, terrain, field data on tools like Avenza and GIS.</p>
+      <p>I'm now teaching myself to build the kind of technology I used to just operate — starting with <strong>embedded systems</strong>, sensors, and the electronics behind interactive objects, alongside cybersecurity and networking fundamentals. My strengths aren't years of code — they're ideas, systems thinking, and the stubbornness to keep soldering until the thing works.</p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <p class="section-note">Move your cursor near a project card — it glows brighter the closer you get. A small nod to the second project below.</p>
+
+    <article class="project" data-glow>
+      <span class="status status-done">Built</span>
+      <div class="photo-slot">Photo of the finished music box goes here</div>
+      <h3>Kingdom Hearts Music Box</h3>
+      <p class="desc">A 3D-printed, Paopu-themed box that lights up and plays music, built by soldering a sound module to a set of LEDs, with magnets and a reed switch to trigger it on open. My first hardware project — built with no prior 3D printing, soldering, or engineering experience, and the one that proved I could take an idea from CAD file to a working physical object.</p>
+      <ul class="stack">
+        <li>3D printing</li>
+        <li>Soldering</li>
+        <li>Sound module</li>
+        <li>LEDs</li>
+        <li>Reed switch</li>
+      </ul>
+      <p class="desc" style="margin-top:14px;"><a href="https://github.com/dianne-jpg/papou-music-box">View repo →</a></p>
+    </article>
+
+    <article class="project" data-glow>
+      <span class="status status-progress">Early build</span>
+      <div class="photo-slot">Photo or video of the wayfinders goes here</div>
+      <h3>Proximity Wayfinders</h3>
+      <p class="desc">3D-printed Kingdom Hearts Wayfinders that will glow brighter the closer together they get, using ESP32-C3 boards and Bluetooth proximity sensing. Sketch skeleton and LED/PWM setup are in place; wiring and on-hardware testing are the current step, with Bluetooth proximity sensing coming next.</p>
+      <ul class="stack">
+        <li>ESP32-C3</li>
+        <li>Arduino IDE</li>
+        <li>Bluetooth (BLE)</li>
+        <li>3D printing</li>
+      </ul>
+      <p class="desc" style="margin-top:14px;"><a href="https://github.com/dianne-jpg/wayfinder_esp32">View repo →</a></p>
+    </article>
+  </section>
+
+  <section id="study">
+    <h2>Currently learning</h2>
+    <p class="section-note">What I'm putting hours into right now, building toward embedded systems and security work.</p>
+    <div class="study-grid">
+      <div class="study-item">
+        <h4>Python</h4>
+        <p>Learn Python the Hard Way & Codecademy — the scripting backbone for both security tooling and embedded work.</p>
+      </div>
+      <div class="study-item">
+        <h4>Cybersecurity</h4>
+        <p>TryHackMe rooms and Wireshark — networking fundamentals and packet analysis.</p>
+      </div>
+      <div class="study-item">
+        <h4>Embedded systems</h4>
+        <p>ESP32s in Arduino IDE — sensors, microcontrollers, and hardware-software integration.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <h2>Let's talk</h2>
+    <p>Open to entry-level roles in embedded systems, hardware, or cybersecurity — and always happy to talk about interactive art and physical computing.</p>
+    <div class="footer-links">
+      <a href="mailto:your.email@example.com">your.email@example.com</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Proximity glow — cards brighten as the cursor gets closer,
+  // echoing how the Wayfinder project itself responds to proximity.
+  const cards = document.querySelectorAll('[data-glow]');
+  const maxDist = 420;
+
+  function updateGlow(x, y) {
+    cards.forEach(card => {
+      const r = card.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dist = Math.hypot(x - cx, y - cy);
+      const closeness = Math.max(0, 1 - dist / maxDist);
+      const alpha = 0.12 + closeness * 0.45;
+      const spread = 4 + closeness * 22;
+      card.style.borderColor = closeness > 0.05
+        ? `rgba(242, 166, 90, ${0.25 + closeness * 0.5})`
+        : 'var(--surface-line)';
+      card.style.boxShadow = `0 0 ${spread}px rgba(242, 166, 90, ${alpha * closeness})`;
+    });
+  }
+
+  window.addEventListener('mousemove', e => updateGlow(e.clientX, e.clientY));
+</script>
+
+</body>
+</html>
