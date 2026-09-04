@@ -72,6 +72,33 @@
     100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
   }
 
+  .hero-stars {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.9;
+  }
+
+  .hero-stars .star-dot {
+    fill: var(--text-dim);
+  }
+  .hero-stars .star-dot.bright {
+    fill: var(--glow);
+  }
+  .hero-stars .constellation-line {
+    stroke: var(--teal);
+    stroke-width: 1.5;
+    fill: none;
+    opacity: 0.5;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
   .kicker {
     color: var(--teal);
     font-size: 0.95rem;
@@ -216,20 +243,54 @@
 <div class="wrap">
 
   <section class="hero">
-    <p class="kicker">Interactive hardware & light</p>
-    <h1>I build objects that respond to you.</h1>
-    <p>Physical computing, embedded systems, and a background in fieldwork — now pointed at sensors, microcontrollers, and things that glow, sense, and react.</p>
-    <div class="hero-links">
-      <a class="btn btn-primary" href="#projects">See the projects</a>
-      <a class="btn" href="#contact">Get in touch</a>
+    <svg class="hero-stars" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <!-- loose Paopu/wayfinder constellation, upper right -->
+      <g class="constellation-line">
+        <path d="M 560 90 L 640 130 L 660 210 L 590 240 L 530 180 Z" />
+      </g>
+      <circle class="star-dot bright" cx="560" cy="90" r="5" />
+      <circle class="star-dot bright" cx="640" cy="130" r="4.5" />
+      <circle class="star-dot bright" cx="660" cy="210" r="5" />
+      <circle class="star-dot bright" cx="590" cy="240" r="4.5" />
+      <circle class="star-dot bright" cx="530" cy="180" r="4.5" />
+
+      <!-- scattered field stars -->
+      <circle class="star-dot" cx="100" cy="60" r="1.6" />
+      <circle class="star-dot" cx="220" cy="40" r="1.2" />
+      <circle class="star-dot" cx="340" cy="90" r="1.8" />
+      <circle class="star-dot" cx="430" cy="50" r="1.3" />
+      <circle class="star-dot" cx="710" cy="60" r="1.5" />
+      <circle class="star-dot" cx="760" cy="150" r="1.2" />
+      <circle class="star-dot" cx="740" cy="280" r="1.6" />
+      <circle class="star-dot" cx="680" cy="340" r="1.3" />
+      <circle class="star-dot" cx="600" cy="380" r="1.4" />
+      <circle class="star-dot" cx="480" cy="420" r="1.2" />
+      <circle class="star-dot" cx="150" cy="200" r="1.4" />
+      <circle class="star-dot" cx="90" cy="320" r="1.6" />
+      <circle class="star-dot" cx="200" cy="420" r="1.2" />
+      <circle class="star-dot" cx="60" cy="450" r="1.5" />
+      <circle class="star-dot" cx="380" cy="480" r="1.3" />
+      <circle class="star-dot" cx="500" cy="120" r="1.2" />
+      <circle class="star-dot" cx="620" cy="470" r="1.4" />
+      <circle class="star-dot" cx="720" cy="500" r="1.2" />
+    </svg>
+
+    <div class="hero-content">
+      <p class="kicker">Interactive hardware & light</p>
+      <h1>I build objects that respond to you.</h1>
+      <p>Physical computing, embedded systems, and a background in fieldwork — now pointed at sensors, microcontrollers, and things that glow, sense, and react.</p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="#projects">See the projects</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
     </div>
   </section>
 
   <section id="about">
     <h2>About</h2>
     <div class="about-text">
-      <p>I spent close to a decade in natural resources — habitat restoration, wildland fire, and park ranger work. Hands-on, physical, often working off field data and tools like Avenza and GIS.</p>
-      <p>Now I'm teaching myself to build the kind of technology I used to just operate: embedded systems, sensors, the electronics behind interactive objects. I'm also picking up cybersecurity and networking fundamentals. I don't have years of code behind me yet. What I've got is ideas, a systems-thinking brain from the field, and enough stubbornness to keep soldering until the thing actually works.</p>
+      <p>I spent close to a decade in <strong>natural resources</strong> — habitat restoration, wildland fire, and park ranger work. Hands-on, physical, often working off field data and tools like Avenza and GIS.</p>
+      <p>Now I'm teaching myself to build the kind of technology I used to just operate: <strong>embedded systems</strong>, sensors, the electronics behind interactive objects. I'm also picking up cybersecurity and networking fundamentals. I don't have years of code behind me yet. What I've got is ideas, a systems-thinking brain from the field, and enough stubbornness to keep soldering until the thing actually works.</p>
     </div>
   </section>
 
@@ -292,9 +353,9 @@
     <h2>Let's talk</h2>
     <p>Open to entry-level roles in embedded systems, hardware, or cybersecurity — and always happy to talk about interactive art and physical computing.</p>
     <div class="footer-links">
-      <a href="mailto:dianne90.jpg@gmail.com">dianne90.jpg@gmail.com</a>
+      <a href="mailto:your.email@example.com">your.email@example.com</a>
       <a href="https://github.com/dianne-jpg">GitHub</a>
-<a href="https://www.linkedin.com/in/dianne-dollente-7b7815189/">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/dianne-dollente-7b7815189/">LinkedIn</a>
     </div>
   </footer>
 
